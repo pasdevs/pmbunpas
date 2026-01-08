@@ -1,3 +1,4 @@
+import { image } from "framer-motion/client";
 import {
   Zap,
   Compass,
@@ -75,6 +76,8 @@ export const DATA = {
         eta: "Estimasi: cepat setelah berkas lengkap",
         cta: { label: "Lihat Detail Jalur PMDK", href: "#/jalur-pmdk" },
         highlight: true,
+        image:"/2.png",
+        bg: "#F8F5F2", // coklat soft
       },
       {
         id: "usm",
@@ -84,6 +87,8 @@ export const DATA = {
         benefits: ["Seleksi terjadwal", "Proses jelas & terstruktur", "Cocok untuk semua latar belakang sekolah"],
         eta: "Estimasi: sesuai jadwal seleksi",
         cta: { label: "Lihat Detail Jalur USM", href: "#/jalur-usm" },
+        image:"/3.png",
+        bg: "#F3F8F7", // hijau soft
       },
       {
         id: "prioritas",
@@ -93,6 +98,8 @@ export const DATA = {
         benefits: ["Layanan diprioritaskan", "Proses lebih singkat", "Pendampingan langsung"],
         eta: "Estimasi: tergantung layanan yang dipilih",
         cta: { label: "Lihat Detail Jalur Prioritas", href: "#/jalur-prioritas" },
+        image:"/1.png",
+        bg: "#F4F6FA", // abu kebiruan
       },
     ],
   },

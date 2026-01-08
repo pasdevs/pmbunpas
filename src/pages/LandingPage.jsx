@@ -100,11 +100,12 @@ function Section({ id, eyebrow, title, desc, children }) {
   );
 }
 
-function Card({ children, className }) {
+function Card({ children, className, ...props }) {
   return (
     <div
+      {...props}
       className={cx(
-        "rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-200",
+        "rounded-2xl p-5 shadow-sm ring-1 ring-neutral-200",
         className
       )}
     >
@@ -170,18 +171,27 @@ export default function PMBUnpasHomepagePreview() {
       <header className="sticky top-0 z-40 border-b border-[#E6E1DE] bg-white/90 backdrop-blur">
         <Container>
           <div className="flex h-16 items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              {/* <div className="grid h-10 w-10 place-items-center rounded-2xl bg-neutral-900 text-white"> */}
-              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-[#7F6B5D] text-white">
-                <span className="text-sm font-black">U</span>
+            <a
+              href="https://pmb.unpas.ac.id"
+              className="group flex items-center gap-3"
+            >
+              <div className="flex h-10 w-10 items-center justify-center">
+                <img
+                  src="/logo_unpas.png"
+                  alt="Universitas Pasundan"
+                  className="h-full w-full object-contain"
+                />
               </div>
+
               <div className="leading-tight">
-                {/* <div className="text-sm font-extrabold">{d.header.brand}</div>
-                <div className="text-xs text-neutral-600">pmb.unpas.ac.id</div> */}
-                <div className="text-sm font-extrabold text-[#4B3F36]">{d.header.brand}</div>
-                <div className="text-xs text-[#7F6B5D]">pmb.unpas.ac.id</div>
+                <div className="text-sm font-extrabold text-[#4B3F36] group-hover:text-[#6F5C4F]">
+                  {d.header.brand}
+                </div>
+                <div className="text-xs text-[#7F6B5D] group-hover:text-[#6F5C4F]">
+                  pmb.unpas.ac.id
+                </div>
               </div>
-            </div>
+            </a>
 
             <nav className="hidden items-center gap-5 lg:flex">
               {d.header.nav.map((n) => (
@@ -333,14 +343,14 @@ export default function PMBUnpasHomepagePreview() {
                   alt="Mahasiswi UNPAS"
                   className="pointer-events-none absolute bottom-0 right-0 z-0 h-[260px] object-contain opacity-95"
                 /> */}
-                <motion.img
-                  src="/11.png"
+                {/* <motion.img
+                  src="/1.png"
                   alt="Mahasiswi UNPAS"
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 0.95, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
                   className="pointer-events-none absolute bottom-0 right-0 z-0 h-[260px] object-contain"
-                />
+                /> */}
 
                 <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-white/10" />
 
@@ -386,8 +396,10 @@ export default function PMBUnpasHomepagePreview() {
           {d.paths.cards.map((c) => (
             <Card
               key={c.id}
+              // style={{ backgroundColor: "#316f6d21" }}
+              style={{ backgroundColor: c.bg }}
               className={cx(
-                "group flex flex-col transition-all duration-300 ease-out",
+                "group relative flex flex-col overflow-hidden transition-all duration-300 ease-out",
                 "hover:-translate-y-1 hover:scale-[1.03] hover:shadow-lg",
                 "hover:ring-2 hover:ring-[#7F6B5D]",
                 c.highlight
@@ -395,51 +407,81 @@ export default function PMBUnpasHomepagePreview() {
                   : "ring-1 ring-neutral-200"
               )}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  {/* <div className="text-lg font-extrabold">{c.title}</div> */}
-                  <div className="text-lg font-extrabold transition-colors group-hover:text-[#1A5F5C]">
-                    {c.title}
+              {console.log(c.id, c.bg)}
+              {/* ===== CONTENT ===== */}
+              <div className="relative z-10 flex flex-1 flex-col">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-lg font-extrabold transition-colors group-hover:text-[#1A5F5C]">
+                      {c.title}
+                    </div>
+                    <div className="mt-1 text-sm font-medium text-neutral-600">
+                      {c.subtitle}
+                    </div>
                   </div>
-                  <div className="mt-1 text-sm font-medium text-neutral-600">{c.subtitle}</div>
+
+                  {c.highlight ? (
+                    <span className="rounded-full bg-neutral-900 px-3 py-1 text-xs font-bold text-white">
+                      Rekomendasi
+                    </span>
+                  ) : null}
                 </div>
-                {c.highlight ? (
-                  <span className="rounded-full bg-neutral-900 px-3 py-1 text-xs font-bold text-white">Rekomendasi</span>
+
+                <div className="mt-4">
+                  <div className="text-xs font-bold text-neutral-800">Cocok untuk:</div>
+                  <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-700">
+                    {c.whoFor.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-4">
+                  <div className="text-xs font-bold text-neutral-800">Keunggulan:</div>
+                  <ul className="mt-2 space-y-2">
+                    {c.benefits.map((b) => (
+                      <li key={b} className="flex items-start gap-2 text-sm text-neutral-700">
+                        <BadgeCheck className="mt-0.5 h-4 w-4 text-neutral-900" />
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {c.eta ? (
+                  <div className="mt-4 text-xs font-semibold text-neutral-600">
+                    {c.eta}
+                  </div>
                 ) : null}
+
+                <div className="mt-auto pt-5">
+                  <Button
+                    href={c.cta.href}
+                    variant="secondary"
+                    rightIcon={<ArrowRight className="h-4 w-4" />}
+                  >
+                    {c.cta.label}
+                  </Button>
+                </div>
               </div>
 
-              <div className="mt-4">
-                <div className="text-xs font-bold text-neutral-800">Cocok untuk:</div>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-700">
-                  {c.whoFor.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mt-4">
-                <div className="text-xs font-bold text-neutral-800">Keunggulan:</div>
-                <ul className="mt-2 space-y-2">
-                  {c.benefits.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-sm text-neutral-700">
-                      <BadgeCheck className="mt-0.5 h-4 w-4 text-neutral-900" />
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {c.eta ? <div className="mt-4 text-xs font-semibold text-neutral-600">{c.eta}</div> : null}
-
-              <div className="mt-auto pt-5">
-                <Button
-                  href={c.cta.href}
-                  variant="secondary"
-                  rightIcon={<ArrowRight className="h-4 w-4" />}
-                >
-                  {c.cta.label}
-                </Button>
-              </div>
+              {/* ===== FOTO MAHASISWI (LEBIH BESAR + DINAMIS) ===== */}
+              {c.image && (
+                <img
+                  src={c.image}
+                  alt=""
+                  className="
+        pointer-events-none absolute bottom-0 right-0 z-0
+        h-[190px] sm:h-[210px]
+        opacity-85 object-contain
+        translate-x-8 translate-y-6
+        transition-transform duration-300
+        group-hover:translate-x-6
+        [mask-image:linear-gradient(to_top,transparent_10%, black_60%, black_100%)]
+    [-webkit-mask-image:linear-gradient(to_top,transparent_10%, black_60%, black_100%)]
+      "
+                />
+              )}
             </Card>
           ))}
         </div>
